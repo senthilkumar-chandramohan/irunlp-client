@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ActionButton from './ActionButton';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -20,31 +19,30 @@ const ChatInput: React.FC<ChatInputProps> = ({
     setInputText('');
   };
 
-  const handleButtonClick = () => {
-    if (!inputText.trim() || isLoading) return;
-    onSendMessage(inputText);
-    setInputText('');
-  };
-
   return (
-    <footer className="bg-white p-4 border-t">
-      <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="relative">
+      <div className="relative shadow-sm hover:shadow-md transition-shadow duration-200">
         <input
           type="text"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder="Type your message..."
-          className="flex-1 rounded-lg border border-gray-300 p-2 focus:outline-none focus:border-blue-500"
+          placeholder="Type a message..."
+          className="w-full px-4 py-3.5 pr-24 bg-white rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:shadow-lg outline-none transition-all text-gray-800 placeholder-gray-400"
           disabled={isLoading}
         />
-        <ActionButton
-          onClick={handleButtonClick}
-          variant="primary"
+        <button
+          type="submit"
+          disabled={!inputText.trim() || isLoading}
+          className={`absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 rounded-lg font-medium text-sm transition-all ${
+            !inputText.trim() || isLoading
+              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md'
+          }`}
         >
           {isLoading ? 'Sending...' : 'Send'}
-        </ActionButton>
-      </form>
-    </footer>
+        </button>
+      </div>
+    </form>
   );
 };
 
